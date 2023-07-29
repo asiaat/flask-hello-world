@@ -1,6 +1,30 @@
 from PIL import Image, ImageDraw, ImageFont
 import random
 import os
+import json
+
+def create_erc721_metadata(file_path,nr,image,cuteness,hairy):
+    
+    data = {
+        "name": "QuantumCert",
+        "description": f"Quantum Teleportation Cert #{nr}",
+        "image": image,
+        "attributes": [
+            {
+                "trait_type": "cuteness",
+                "value": int(cuteness)
+            },
+            {
+                "trait_type": "hairy",
+                "value": int(hairy)
+            }
+        ]
+    }    
+    
+    with open(file_path, "w") as json_file:
+        json.dump(data, json_file)
+    
+    return file_path
 
 def generate_certificate(name, issued_date, certificate_holder, quantum_computer, num_qubits):
     # Create a blank white image with appropriate dimensions (you can customize the size as needed)

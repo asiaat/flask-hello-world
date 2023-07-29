@@ -1,10 +1,7 @@
 from flask import Flask,jsonify,request
-import urllib.request 
-import json
 import requests
-#from dotenv import load_dotenv
-from PIL import Image, ImageDraw, ImageFont
-from certify import generate_certificate
+from certify import generate_certificate, create_erc721_metadata
+from   datetime import datetime 
 
 proj_id = '2TEasvlIepRnGZwQWKGjy4PcRVS'
 proj_secret = '3f71ebe5ea462f4bb1c78f70bbb812ee'
@@ -52,48 +49,88 @@ def put_ipfs():
 
     return response.text
 
-@app.route('/post_json', methods=['POST'])
-def process_json():
-    content_type = request.headers.get('Content-Type')
-    if (content_type == 'application/json'):
-        json = request.json
-        return json
-    else:
-        return 'Content-Type not supported!'
     
 @app.route('/create_json/<cuteness>')
 def create_json(cuteness):
     
-    json_data = {
-        "name": "PUG",
-        "description": "An adorable PUG pup!",
-        "image": "https://ipfs.io/ipfs/QmSsYRx3LpDAb1GZQm7zZ1AuHZjfbPkD6J7s9r41xu1mf8?filename=pug.png",
-        "attributes": [
-            {
-                "trait_type": "cuteness",
-                
-                
-                "value": int(cuteness)
-            },
-            {
-                "trait_type": "hairy",
-                "value": 81
-            }
-        ]
-    }
-    
-    name = "Halter"
+    name = "Halter2"
     issued_date = "July 29, 2023"
     certificate_holder = "John Doe"
     quantum_computer = "QuantumLab-1"
-    num_qubits = 50
+    num_qubits = 30
 
     generate_certificate(name, issued_date, certificate_holder, quantum_computer, num_qubits)
     
-    return json_data
+    return name
+
+@app.route('/put_cert/')
+def put_cert():
+
+    url = "https://ipfs.infura.io:5001/api/v0/add?pin=false"    
+    # Prepare the file payload
+    file_path = "certs/Quantum_Teleportation_Cert_Halter2.png"
+    files = {'file': open(file_path, 'rb')}
+    
+    
+    response = requests.post(url, 
+                            auth=(proj_id, proj_secret),
+                            files=files
+                            )
+    # Check the response
+    json_out = {}
+    if response.status_code == 200:
+        ipfs_hash = response.json()['Hash']
+        print("File uploaded to IPFS with hash:", ipfs_hash)
+        json_out = {
+            "msg":"File uploaded to IPFS with hash",
+            "hash":ipfs_hash
+        }
+        
+        url2 = "https://ipfs.infura.io:5001/api/v0/add?pin=false"    
+        # Prepare the file payload
+        
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        new_json_file = f"certs/metadata-{timestamp}.json"
+        file_path2 = create_erc721_metadata(new_json_file,
+                        22,
+                        ipfs_hash,
+                        33,
+                        66
+                        )
+        
+        files2 = {'file': open(file_path2, 'rb')}
+  
+        response2 = requests.post(url2, 
+                                auth=(proj_id, proj_secret),
+                                files=files2
+                                )
+        
+        if response2.status_code == 200:
+            ipfs_hash = response2.json()['Hash']
+            print("JSON File uploaded to IPFS with hash:", ipfs_hash)
+            json_out = {
+                "msg":"File uploaded to IPFS with hash",
+                "hash":ipfs_hash
+            }
+        else:
+            print("Error:", response.text)
+            json_out = {
+                "msg":"Error",
+                "error":response.text
+            }
+        
+        
+    else:
+        print("Error:", response.text)
+        json_out = {
+            "msg":"Error",
+            "error":response.text
+        }
+
+    return json_out
     
 
-        
+
         
         
 
