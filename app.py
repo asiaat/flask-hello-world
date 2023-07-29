@@ -1,4 +1,4 @@
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 import urllib.request 
 import json
 import requests
@@ -33,6 +33,31 @@ def get_ipfs(cid):
 
     return response.text
 
+
+@app.route('/put_ipfs/')
+def put_ipfs():
+
+    url = "https://ipfs.infura.io:5001/api/v0/add?pin=false"    
+    # Prepare the file payload
+    file_path = "probe/sample-result.json"
+    files = {'file': open(file_path, 'rb')}
+    
+    response = requests.post(url, 
+                            auth=(proj_id, proj_secret),
+                            files=files
+                            )
+
+    return response.text
+
+@app.route('/post_json', methods=['POST'])
+def process_json():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        json = request.json
+        return json
+    else:
+        return 'Content-Type not supported!'
+    
 
         
         
