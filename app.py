@@ -3,6 +3,8 @@ import urllib.request
 import json
 import requests
 #from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
+from certify import generate_certificate
 
 proj_id = '2TEasvlIepRnGZwQWKGjy4PcRVS'
 proj_secret = '3f71ebe5ea462f4bb1c78f70bbb812ee'
@@ -42,6 +44,7 @@ def put_ipfs():
     file_path = "probe/sample-result.json"
     files = {'file': open(file_path, 'rb')}
     
+    
     response = requests.post(url, 
                             auth=(proj_id, proj_secret),
                             files=files
@@ -57,6 +60,37 @@ def process_json():
         return json
     else:
         return 'Content-Type not supported!'
+    
+@app.route('/create_json/<cuteness>')
+def create_json(cuteness):
+    
+    json_data = {
+        "name": "PUG",
+        "description": "An adorable PUG pup!",
+        "image": "https://ipfs.io/ipfs/QmSsYRx3LpDAb1GZQm7zZ1AuHZjfbPkD6J7s9r41xu1mf8?filename=pug.png",
+        "attributes": [
+            {
+                "trait_type": "cuteness",
+                
+                
+                "value": int(cuteness)
+            },
+            {
+                "trait_type": "hairy",
+                "value": 81
+            }
+        ]
+    }
+    
+    name = "Halter"
+    issued_date = "July 29, 2023"
+    certificate_holder = "John Doe"
+    quantum_computer = "QuantumLab-1"
+    num_qubits = 50
+
+    generate_certificate(name, issued_date, certificate_holder, quantum_computer, num_qubits)
+    
+    return json_data
     
 
         
