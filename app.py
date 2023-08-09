@@ -21,6 +21,14 @@ def hello_json():
     }
     return jsonify(data)
 
+@app.route('/list')
+def hello_list():
+    data = [{
+        'msg':'Hello, World!',
+        'decimal':15
+    }]
+    return jsonify(data)
+
 @app.route('/get_ipfs/<cid>')
 def get_ipfs(cid):
     
