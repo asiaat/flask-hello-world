@@ -3,9 +3,7 @@ import requests
 from certify import generate_certificate, create_erc721_metadata
 from   datetime import datetime 
 #from quantum.quantumcomp import backend_name
-import numpy as np
-from qiskit import *
-from qiskit import Aer 
+
 
 
 proj_id = '2TEasvlIepRnGZwQWKGjy4PcRVS'
@@ -142,14 +140,7 @@ def put_cert():
 
     return json_out
     
-@app.route('/qiskit')
-def qickit():
-    backend = Aer.get_backend('statevector_simulator')
-    data = [{
-        'msg':'Hello, Quantum World!',
-        'decimal':backend.name()
-    }]
-    return jsonify(data)
+
 
         
         
