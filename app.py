@@ -138,7 +138,14 @@ def put_cert():
 
     return json_out
     
-
+@app.route('/qiskit')
+def hello_list():
+    
+    data = [{
+        'msg':'Hello, Quantum World!',
+        'decimal':backend_name()
+    }]
+    return jsonify(data)
 
         
         
