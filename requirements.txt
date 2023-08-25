@@ -4,4 +4,3 @@ requests
 Pillow 
 qiskit==0.43.3
 qiskit-aer
-

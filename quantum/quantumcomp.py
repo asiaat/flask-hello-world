@@ -1,6 +1,6 @@
 import numpy as np
 from qiskit import *
-from qiskit import Aer
+from qiskit import Aer 
 
 def backend_name():
 
