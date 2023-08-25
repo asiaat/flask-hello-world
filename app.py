@@ -2,7 +2,10 @@ from flask import Flask,jsonify,request
 import requests
 from certify import generate_certificate, create_erc721_metadata
 from   datetime import datetime 
-from lib.quantumcomp import backend_name
+#from quantum.quantumcomp import backend_name
+import numpy as np
+from qiskit import *
+
 
 proj_id = '2TEasvlIepRnGZwQWKGjy4PcRVS'
 proj_secret = '3f71ebe5ea462f4bb1c78f70bbb812ee'
@@ -139,11 +142,11 @@ def put_cert():
     return json_out
     
 @app.route('/qiskit')
-def hello_list():
+def qickit():
     
     data = [{
         'msg':'Hello, Quantum World!',
-        'decimal':backend_name()
+        'decimal':'backend_name()'
     }]
     return jsonify(data)
 
