@@ -1,6 +1,7 @@
 Flask
 Gunicorn
 requests
-Pillow
+Pillow 
 qiskit
+qiskit-terra==0.24.2
 
