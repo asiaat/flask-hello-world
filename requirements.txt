@@ -2,5 +2,5 @@ Flask
 Gunicorn
 requests
 Pillow 
-qiskit==0.43.3
+qiskit==0.44.1
 qiskit-aer
